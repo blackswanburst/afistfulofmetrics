@@ -7,6 +7,7 @@
 
 import time, sys
 from shodan import Shodan
+from decimal import *
 
 SHODAN_API_KEY = ""
 
@@ -20,7 +21,7 @@ api = Shodan(SHODAN_API_KEY)
 FACETS = [
 ('org', 10),
 ('asn', 10),
-# We only care about the top 5 countries, this is how we let Shodan know to return 5 instead of the
+# We only care about the top 10 countries, this is how we let Shodan know to return 5 instead of the
 # default 10 for a facet. If you want to see more than 10, you could do ('country', 1000) for example
 # to see the top 1,000 countries for a search query.
 ('country', 10),
@@ -61,8 +62,8 @@ print 'Total Results: %s\n' % result['total']
 if result['total'] == 0:
 	IPv4lwcost = float('Inf')
 else:
-	IPv4lwcost = (shodancost/result['total'])
-print 'All-IPv4 L-W cost:  $%f\n' % IPv4lwcost
+	IPv4lwcost = (Decimal(shodancost)/Decimal(result['total']))
+print 'All-IPv4 L-W cost:  $%.10f\n' % IPv4lwcost
 # Print the summary info from the facets
 for facet in result['facets']:
 	print FACET_TITLES[facet]
@@ -70,5 +71,5 @@ for facet in result['facets']:
 		print term['value']+'\n'
 		query = facet+':\"%s\"' % term['value']
 		vips = api.count(query)
-		print '%f' % ((ipcost*vips['total'])/term['count'])
+		print '%.10f' % (Decimal(ipcost*vips['total'])/Decimal(term['count']))
 		print ''
