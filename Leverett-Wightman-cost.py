@@ -11,17 +11,13 @@ from decimal import *
 
 SHODAN_API_KEY = ""
 
-if SHODAN_API_KEY == "":
-	print "Please add an API key to use this code."
-	sys.exit()
-
 # Create a connection to the Shodan API
 api = Shodan(SHODAN_API_KEY)
 
 FACETS = [
 ('org', 10),
 ('asn', 10),
-# We only care about the top 10 countries, this is how we let Shodan know to return 5 instead of the
+# We only care about the top 5 countries, this is how we let Shodan know to return 5 instead of the
 # default 10 for a facet. If you want to see more than 10, you could do ('country', 1000) for example
 # to see the top 1,000 countries for a search query.
 ('country', 10),
