@@ -42,7 +42,7 @@ def query_Shodan(term):
 
 # Input validation
 if len(sys.argv) == 1:
-	print 'Usage:%s<search query>' %sys.argv[0]
+	print 'Usage:%s<shodan query>' %sys.argv[0]
 	sys.exit(1)
 
 query = ' '.join(sys.argv[1:])
@@ -65,7 +65,8 @@ for facet in result['facets']:
 	print FACET_TITLES[facet]
 	for term in result['facets'][facet]:
 		print term['value']+'\n'
-		query = facet+':\"%s\"' % term['value']
-		vips = api.count(query)
-		print '%.10f' % (Decimal(ipcost*vips['total'])/Decimal(term['count']))
+		org = term['value'].replace(" ", "+")
+		orgquery = query+' '+facet+':\"%s\"' % org
+		vips = api.count(orgquery)
+		print '$%.10f' % (Decimal(ipcost*vips['total'])/Decimal(term['count']))
 		print ''
