@@ -67,6 +67,7 @@ for facet in result['facets']:
 		print term['value']+'\n'
 		org = term['value'].replace(" ", "+")
 		orgquery = query+' '+facet+':\"%s\"' % org
+		time.sleep(1)
 		vips = api.count(orgquery)
 		print '$%.10f' % (Decimal(ipcost*vips['total'])/Decimal(term['count']))
 		print ''
